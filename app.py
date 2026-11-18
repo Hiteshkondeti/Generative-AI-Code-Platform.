@@ -43,6 +43,7 @@ def get_api_key():
 
 
 
+def ask_gemi
 def ask_gemini(prompt):
 
     api_key = get_api_key()
