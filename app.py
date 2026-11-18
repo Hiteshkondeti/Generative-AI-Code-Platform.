@@ -41,9 +41,6 @@ def get_api_key():
     except Exception:
         return os.getenv("GEMINI_API_KEY", "")
 
-
-
-def ask_gemi
 def ask_gemini(prompt):
 
     api_key = get_api_key()
@@ -56,25 +53,28 @@ def ask_gemini(prompt):
         from google.genai import types
 
         client = genai.Client(
-            api_key=api_key
+            api_key=api_key,
+            http_options=types.HttpOptions(
+                timeout=30000
+            )
         )
 
         response = client.models.generate_content(
             model="gemini-3.8-flash",
             contents=prompt,
             config=types.GenerateContentConfig(
-                thinking_config=types.ThinkingConfig(
-                    thinking_level="low"
-                ),
-                max_output_tokens=2048
+                max_output_tokens=1024,
+                automatic_continuation=False
             )
         )
+
+        if not response.text:
+            return None, "Gemini returned an empty response."
 
         return response.text.strip(), "Gemini AI"
 
     except Exception as error:
         return None, f"Gemini Error: {error}"
-
 
 
 # --------------------------------------------------
