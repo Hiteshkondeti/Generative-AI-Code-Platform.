@@ -41,6 +41,7 @@ def get_api_key():
     except Exception:
         return os.getenv("GEMINI_API_KEY", "")
 
+
 def ask_gemini(prompt):
 
     api_key = get_api_key()
